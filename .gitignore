@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tar.gz
+.sites-local/
+.DS_Store
+
+assets-original/
+scripts/reference-theme.css
+scripts/font.css
+
+*.zip
