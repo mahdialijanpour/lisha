@@ -1,0 +1,58 @@
+/* Fixed layout height prevents scroll jumps. Backdrop filtering stays on the
+   glass layers, leaving text and icons sharp throughout the liquid morph. */
+.header.liquid-header{
+ --brand-space:205px;--pill-height:68px;--pill-top:32px;
+ position:sticky;top:12px;z-index:35;isolation:isolate;
+ width:calc(100% - 64px);max-width:1340px;height:132px;margin:9px auto 0;
+ grid-template-columns:minmax(0,1fr) var(--brand-space) minmax(0,1fr);gap:8px;
+ align-items:start;pointer-events:none;
+ transition:grid-template-columns 1.05s cubic-bezier(.25,1.15,.35,1),gap 1.05s cubic-bezier(.25,1.15,.35,1),max-width 1.1s cubic-bezier(.25,1.08,.35,1);
+}
+.header-liquid-surface{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.header-liquid-surface>span,.header-liquid-surface::after{
+ background:linear-gradient(115deg,#ffffff6b 0%,#ffffff18 42%,#e9dbfa28 72%,#ffffff52 100%),#fbf8ff80;
+ border:1px solid #ffffffb3;border-bottom-color:#a48cba40;
+ -webkit-backdrop-filter:blur(20px) saturate(165%) contrast(104%);
+ backdrop-filter:blur(20px) saturate(165%) contrast(104%);
+ box-shadow:inset 0 1.5px 1px #fffffff0,inset 1px 0 1px #ffffffb0,inset -1px 0 1px #ffffff70,inset 0 -1px 2px #b69ccc33,0 7px 22px #78628e14,0 1px 3px #9b82ae1f;
+}
+.header-liquid-surface>span{position:absolute;top:var(--pill-top);height:var(--pill-height);width:calc((100% - var(--brand-space) - 16px)/2);border-radius:40px;opacity:1;
+ transition:width 1.05s cubic-bezier(.25,1.15,.35,1),top .85s cubic-bezier(.25,1.1,.35,1),height .85s ease,border-radius 1s ease,opacity .2s ease}
+.header-liquid-surface::after{content:'';position:absolute;inset:0 0 auto;height:var(--pill-height);border-radius:34px;opacity:0;visibility:hidden;transition:opacity .22s ease,visibility 0s .22s}
+.header-liquid-surface>span::after{content:'';position:absolute;inset:1px 10% auto;height:1px;background:linear-gradient(90deg,transparent,#fff,transparent);border-radius:100%;pointer-events:none}
+.header-liquid-surface>span:first-child{right:0}.header-liquid-surface>span:last-child{left:0}
+.liquid-header>.nav-group{height:var(--pill-height);margin-top:var(--pill-top);background:transparent;border-color:transparent;pointer-events:auto;min-width:0;
+ transition:margin-top .85s cubic-bezier(.25,1.1,.35,1),height .85s ease,padding .8s ease}
+.liquid-header>.header-primary{grid-column:1;grid-row:1}
+.liquid-header>.nav-tools{grid-column:3;grid-row:1}
+.header-brand{grid-column:2;grid-row:1;display:flex;justify-content:center;width:var(--brand-space);justify-self:center;pointer-events:auto;transform-origin:50% 35%;
+ transition:opacity .3s ease,transform .5s cubic-bezier(.22,1,.36,1),visibility 0s;opacity:1;visibility:visible}
+.header.liquid-header.is-merged{grid-template-columns:minmax(0,1fr) 52px minmax(0,1fr);gap:0;max-width:960px;--pill-top:0px;--pill-height:62px}
+.is-merged .header-brand{opacity:0;transform:translateY(-19px) scale(.5);visibility:hidden;pointer-events:none;transition:opacity .22s ease,transform .48s cubic-bezier(.4,0,.2,1),visibility 0s .48s}
+.is-merged .header-liquid-surface>span{width:calc(50% + 5px);border-radius:34px;opacity:0;transition:width 1.05s cubic-bezier(.25,1.15,.35,1),top .85s cubic-bezier(.25,1.1,.35,1),height .85s ease,border-radius 1s ease,opacity .3s ease .85s}
+.is-merged .header-liquid-surface::after{opacity:1;visibility:visible;transition:opacity .35s ease .7s,visibility 0s .7s;box-shadow:inset 0 2px 1px #fffffff0,inset 1px 0 1px #ffffffb0,inset -1px 0 1px #ffffff70,inset 0 -1px 2px #b69ccc40,0 8px 30px #68508020,0 2px 5px #9b82ae26}
+.is-merged .header-liquid-surface>span:first-child{border-top-left-radius:5px;border-bottom-left-radius:5px}
+.is-merged .header-liquid-surface>span:last-child{border-top-right-radius:5px;border-bottom-right-radius:5px}
+.is-merged .header-liquid-surface>span:first-child{animation:header-drop-right 1.15s both}
+.is-merged .header-liquid-surface>span:last-child{animation:header-drop-left 1.15s both}
+.header-mini-brand{position:absolute;left:50%;top:7px;width:48px;height:48px;display:grid;place-items:center;opacity:0;visibility:hidden;pointer-events:none;transform:translateX(-50%) translateY(7px) scale(.45);transition:opacity .16s ease,transform .28s ease,visibility 0s .28s}
+.header-mini-brand .botanical-logo img{width:48px;height:48px}
+.header-mini-brand .botanical-logo{width:48px;height:48px}
+.is-merged .header-mini-brand{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0) scale(1);transition:opacity .3s ease .66s,transform .6s cubic-bezier(.2,1.55,.45,1) .6s,visibility 0s .6s}
+.header-mini-brand .botanical-logo:hover img{transform:scale(1.12) rotate(-4deg)}
+@keyframes header-drop-right{0%{transform:translateX(0) scaleY(1)}38%{transform:translateX(-10px) scaleY(.91)}68%{transform:translateX(2px) scaleY(1.055)}100%{transform:translateX(0) scaleY(1)}}
+@keyframes header-drop-left{0%{transform:translateX(0) scaleY(1)}38%{transform:translateX(10px) scaleY(.91)}68%{transform:translateX(-2px) scaleY(1.055)}100%{transform:translateX(0) scaleY(1)}}
+.is-merged>.nav-group{padding-inline:22px}
+.liquid-header>.nav-group a,.liquid-header>.nav-group button{min-height:40px}
+.liquid-header>.nav-group{color:#3f2b4b;text-shadow:0 1px 1px #ffffff6b}
+.liquid-header>.nav-group a,.liquid-header>.nav-group button{border-radius:22px;padding-inline:8px;transition:color .2s ease,background .25s ease,box-shadow .25s ease}
+.liquid-header>.nav-group a:hover,.liquid-header>.nav-group button:hover{background:#ffffff57;box-shadow:inset 0 1px 0 #ffffffa6,0 2px 7px #806b9510;color:#78519f}
+.liquid-header .cart-count{background:#eadcf5b3;border:1px solid #ffffffa3;box-shadow:inset 0 1px 1px #fff9;color:#78519f}
+.liquid-header .nav-tools .cart-count{min-height:0}
+@media(max-width:1100px){.header.liquid-header{--brand-space:160px;width:calc(100% - 40px)}.header.liquid-header.is-merged{max-width:860px}}
+@media(max-width:800px){.header.liquid-header{--brand-space:140px;--pill-height:58px;--pill-top:29px;width:calc(100% - 28px);height:116px;margin-top:5px;gap:5px;top:10px}.header.liquid-header.is-merged{--pill-height:56px;--pill-top:0px;max-width:560px}.header-liquid-surface>span{width:calc((100% - var(--brand-space) - 10px)/2)}.is-merged .header-liquid-surface>span{width:calc(50% + 5px)}.liquid-header>.header-primary{justify-content:flex-start}.liquid-header>.nav-tools{justify-content:flex-end}.liquid-header>.nav-group a,.liquid-header>.nav-group button{min-width:40px;justify-content:center}.liquid-header .nav-tools .cart-count{top:1px;left:0}}
+@media(max-width:600px){.header.liquid-header{--brand-space:120px;--pill-top:27px;--pill-height:52px;height:106px;margin-top:2px;top:calc(8px + env(safe-area-inset-top,0px))}.header.liquid-header.is-merged{--pill-top:0px;--pill-height:56px;max-width:400px}.liquid-header>.nav-group{padding-inline:8px;gap:4px}.liquid-header>.nav-tools{padding-inline:5px}.liquid-header>.nav-group a,.liquid-header>.nav-group button{min-width:36px;min-height:44px;padding-inline:4px}.is-merged>.nav-group{padding-inline:16px;gap:12px}.liquid-header .nav-tools .cart-count{top:1px;left:-2px}}
+@media(max-width:800px){.header-mini-brand{top:6px;width:44px;height:44px}.header-mini-brand .botanical-logo,.header-mini-brand .botanical-logo img{width:44px;height:44px}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.header-liquid-surface>span,.header-liquid-surface::after{background:#faf7fff2}}
+@media(prefers-reduced-transparency:reduce){.header-liquid-surface>span,.header-liquid-surface::after{background:#faf7fff5;-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.header.liquid-header,.header-liquid-surface,.header-liquid-surface>span,.header-liquid-surface::after,.liquid-header>.nav-group,.header-brand,.is-merged .header-brand,.header-mini-brand,.is-merged .header-mini-brand{transition:none!important;animation:none!important}.is-merged .header-brand{transform:none}}

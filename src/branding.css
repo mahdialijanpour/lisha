@@ -1,0 +1,9 @@
+.botanical-logo{line-height:0;flex-shrink:0;align-self:center}
+.botanical-logo img{display:block;width:132px;height:132px;object-fit:contain;transition:transform .25s ease}
+.botanical-logo:hover img{transform:rotate(-3deg)}
+.header:has(.botanical-logo){margin-top:9px}
+.footer-brand .botanical-logo img{width:164px;height:164px}
+@media(max-width:800px){.botanical-logo img{width:116px;height:116px}.header:has(.botanical-logo){margin-top:5px}}
+@media(max-width:600px){.botanical-logo img{width:106px;height:106px}.header:has(.botanical-logo){margin-top:2px}.footer-brand .botanical-logo img{width:132px;height:132px}.footer-brand:has(.botanical-logo){gap:15px}.footer-brand:has(.botanical-logo) p{font-size:19px}}
+@media(max-width:360px){.footer-brand:has(.botanical-logo){justify-content:center;text-align:center}.footer-brand:has(.botanical-logo) p{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.botanical-logo img{transition:none}.botanical-logo:hover img{transform:none}}

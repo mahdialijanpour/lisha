@@ -1,0 +1,25 @@
+{
+  "tool": "Built-in imagegen",
+  "requests": [
+    {
+      "kind": "sweatshirt",
+      "view": "back",
+      "prompt": "Product photography for Lishaspace garment printing configurator. Create a matching perfectly straight rear view of the exact blank sweatshirt in reference. Keep the same off-white cotton fleece, oversized unisex proportions, ribbing, seams, realistic soft studio lighting and long sleeves. Crew neck, NO hood, NO pocket. A single isolated garment, centered entire silhouette, no body, no hanger. Fill about 88 percent of square canvas height. Neutral nearly white fabric with soft gray shadows, no artwork or text. All area outside fabric must be genuine alpha TRANSPARENT, not white. No floor, no cast shadow or props. This is a realistic photograph, NOT a 3D model or illustration. Rear torso must be blank uninterrupted fabric; hoodie hood covers only upper back."
+    },
+    {
+      "kind": "sweatshirt",
+      "view": "side",
+      "prompt": "Product photography for Lishaspace garment printing configurator. Create a matching strict 90-degree side profile, garment front facing image RIGHT, outer sleeve closest to camera fully visible of the exact blank sweatshirt in reference. Keep the same off-white cotton fleece, oversized unisex proportions, ribbing, seams, realistic soft studio lighting and long sleeves. Crew neck, NO hood, NO pocket. A single isolated garment, centered entire silhouette, no body, no hanger. Fill about 88 percent of square canvas height. Neutral nearly white fabric with soft gray shadows, no artwork or text. All area outside fabric must be genuine alpha TRANSPARENT, not white. No floor, no cast shadow or props. This is a realistic photograph, NOT a 3D model or illustration. Side view shows broad outer sleeve unobstructed from shoulder to cuff and hood side when applicable."
+    },
+    {
+      "kind": "hoodie",
+      "view": "back",
+      "prompt": "Product photography for Lishaspace garment printing configurator. Create a matching perfectly straight rear view of the exact blank hoodie in reference. Keep the same off-white cotton fleece, oversized unisex proportions, ribbing, seams, realistic soft studio lighting and long sleeves. Hood upright and recognizable, NO strings, NO eyelets, kangaroo pocket only on front. A single isolated garment, centered entire silhouette, no body, no hanger. Fill about 88 percent of square canvas height. Neutral nearly white fabric with soft gray shadows, no artwork or text. All area outside fabric must be genuine alpha TRANSPARENT, not white. No floor, no cast shadow or props. This is a realistic photograph, NOT a 3D model or illustration. Rear torso must be blank uninterrupted fabric; hoodie hood covers only upper back."
+    },
+    {
+      "kind": "hoodie",
+      "view": "side",
+      "prompt": "Product photography for Lishaspace garment printing configurator. Create a matching strict 90-degree side profile, garment front facing image RIGHT, outer sleeve closest to camera fully visible of the exact blank hoodie in reference. Keep the same off-white cotton fleece, oversized unisex proportions, ribbing, seams, realistic soft studio lighting and long sleeves. Hood upright and recognizable, NO strings, NO eyelets, kangaroo pocket only on front. A single isolated garment, centered entire silhouette, no body, no hanger. Fill about 88 percent of square canvas height. Neutral nearly white fabric with soft gray shadows, no artwork or text. All area outside fabric must be genuine alpha TRANSPARENT, not white. No floor, no cast shadow or props. This is a realistic photograph, NOT a 3D model or illustration. Side view shows broad outer sleeve unobstructed from shoulder to cuff and hood side when applicable."
+    }
+  ]
+}

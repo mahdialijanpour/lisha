@@ -9,3 +9,6 @@ scripts/reference-theme.css
 scripts/font.css
 
 *.zip
+data/
+.env
+.env.*
