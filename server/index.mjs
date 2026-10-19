@@ -3,7 +3,10 @@ import './env.mjs';
 import path from 'node:path';
 import {readFile} from 'node:fs/promises';
 import {createPrintApi} from './api.mjs';
-const api=createPrintApi({dataDir:path.resolve(process.env.LISHA_DATA_DIR||'data')});
+import {prepareDemoCatalog} from './demo-catalog.mjs';
+const dataDir=path.resolve(process.env.LISHA_DATA_DIR||'data');
+if(process.env.LISHA_DEMO_AUTH==='true')await prepareDemoCatalog({dataDir,onlyIfNew:true});
+const api=createPrintApi({dataDir});
 const root=path.resolve('dist');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml','.woff2':'font/woff2','.ico':'image/x-icon'};
 http.createServer((req,res)=>api(req,res,async()=>{

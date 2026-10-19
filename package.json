@@ -7,6 +7,7 @@
     "start": "node server/index.mjs",
     "admin:grant": "node server/admin.mjs",
     "demo:setup": "node scripts/setup-demo.mjs",
+    "demo:export": "node scripts/export-demo.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",

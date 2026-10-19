@@ -15,6 +15,8 @@ COPY server ./server
 COPY shared ./shared
 COPY src/data.js ./src/data.js
 COPY package.json ./package.json
+COPY scripts/setup-demo.mjs ./scripts/setup-demo.mjs
+COPY demo-catalog ./demo-catalog
 RUN mkdir /app/data && chown node:node /app/data
 USER node
 VOLUME ["/app/data"]
