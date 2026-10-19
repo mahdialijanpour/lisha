@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
-import {mkdtemp,mkdir,readFile,writeFile,readdir,rm} from 'node:fs/promises';
+import {mkdtemp,mkdir,readFile,writeFile,readdir,rm,rename} from 'node:fs/promises';
 import {CommerceStore} from '../server/commerce-store.mjs';
 import {exportDemoCatalog,prepareDemoCatalog} from '../server/demo-catalog.mjs';
 
@@ -63,6 +63,14 @@ test('portable catalog excludes private data, restores images and preserves late
   await assert.rejects(prepareDemoCatalog({dataDir:sourceDir,env,catalogDir}),/new data directory/);
   const unchanged=new CommerceStore(sourceDir);
   try{assert.equal(unchanged.db.prepare('SELECT COUNT(*) AS n FROM orders').get().n,1)}finally{unchanged.close()}
+  // A missing bundled image must not leave the next startup with zero-stock defaults.
+  const retryDir=path.join(root,'retry');
+  const imagePath=path.join(catalogDir,'media',mediaId+'.png');
+  await rename(imagePath,imagePath+'.held');
+  await assert.rejects(prepareDemoCatalog({dataDir:retryDir,env,catalogDir,onlyIfNew:true}),/ENOENT/);
+  await rename(imagePath+'.held',imagePath);
+  assert.equal((await prepareDemoCatalog({dataDir:retryDir,env,catalogDir,onlyIfNew:true})).products,bundle.products.length);
+  assert.equal((await prepareDemoCatalog({dataDir:retryDir,env,catalogDir,onlyIfNew:true})).skipped,true);
  }finally{
   assert.equal(path.dirname(path.resolve(root)),path.resolve(os.tmpdir()));assert.match(path.basename(root),/^lisha-catalog-/);
   await rm(root,{recursive:true,force:true});

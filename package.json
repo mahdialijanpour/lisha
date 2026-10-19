@@ -8,6 +8,8 @@
     "admin:grant": "node server/admin.mjs",
     "demo:setup": "node scripts/setup-demo.mjs",
     "demo:export": "node scripts/export-demo.mjs",
+    "demo:check": "node scripts/check-demo.mjs",
+    "verify": "npm test && npm run build && npm run demo:check",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",

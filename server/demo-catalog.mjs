@@ -35,17 +35,28 @@ export async function exportDemoCatalog(sourceDir,targetDir=bundleDir){
 
 export async function prepareDemoCatalog({dataDir,env=process.env,catalogDir=bundleDir,onlyIfNew=false}){
  if(!demoAccounts(env))throw Error('Enable LISHA_DEMO_AUTH and configure both demo accounts first.');
- if(onlyIfNew&&existsSync(path.join(dataDir,'commerce.sqlite')))return {skipped:true};
+ if(onlyIfNew&&existsSync(path.join(dataDir,'commerce.sqlite'))){
+  // Retry our own interrupted first import, but never replace an existing live catalog.
+  const existing=new DatabaseSync(path.join(dataDir,'commerce.sqlite'),{readOnly:true});
+  try{
+   const pending=existing.prepare('SELECT value FROM settings WHERE key=?').get('demoCatalogPending');
+   if(pending?.value!=='true')return {skipped:true};
+  }finally{existing.close()}
+ }
  const catalog=JSON.parse(await readFile(path.join(catalogDir,'catalog.json'),'utf8'));
  if(catalog.version!==1||!catalog.products?.length||!Array.isArray(catalog.variants)||!Array.isArray(catalog.media)||catalog.media.some(m=>!validMedia(m)))throw Error('Invalid demo catalog bundle.');
  const store=new CommerceStore(dataDir);
  try{
   if(store.setting('demoCatalogSeeded'))return {skipped:true};
-  const populated=['customers','orders','payments','sessions'].some(table=>store.db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get().n);
-  if(populated)throw Error('Demo import requires a new data directory; existing accounts and orders will not be overwritten.');
+  const assertEmpty=()=>{
+   if(['customers','orders','payments','sessions'].some(table=>store.db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get().n))throw Error('Demo import requires a new data directory; existing accounts and orders will not be overwritten.');
+  };
+  assertEmpty();store.setSetting('demoCatalogPending',true);
   await mkdir(path.join(dataDir,'catalog'),{recursive:true});
   for(const m of catalog.media)await copyFile(path.join(catalogDir,'media',m.file),path.join(dataDir,'catalog',m.file));
   store.transaction(()=>{
+   assertEmpty();
+   if(store.setting('demoCatalogSeeded'))return;
    store.db.exec('DELETE FROM inventory_ledger; DELETE FROM variants; DELETE FROM products; DELETE FROM media;');
    for(const p of catalog.products)store.db.prepare('INSERT INTO products(id,payload,updated_at) VALUES(?,?,?)').run(p.id,JSON.stringify(pick(p,productKeys)),Date.now());
    for(const v of catalog.variants){
@@ -55,7 +66,9 @@ export async function prepareDemoCatalog({dataDir,env=process.env,catalogDir=bun
    }
    for(const m of catalog.media)store.db.prepare('INSERT INTO media VALUES(?,?,?,?)').run(m.id,m.file,m.mime,Date.now());
    for(const key of settingKeys)if(Object.hasOwn(catalog.settings||{},key))store.setSetting(key,catalog.settings[key]);
-   store.setSetting('demoCatalogSeeded',true);store.audit('demo-setup','demo.catalog.prepare','catalog',{products:catalog.products.length});
+   store.setSetting('demoCatalogSeeded',true);
+   store.db.prepare('DELETE FROM settings WHERE key=?').run('demoCatalogPending');
+   store.audit('demo-setup','demo.catalog.prepare','catalog',{products:catalog.products.length});
   });
   return {products:catalog.products.length,media:catalog.media.length};
  }finally{store.close()}
