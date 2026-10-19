@@ -1,4 +1,5 @@
 import http from 'node:http';
+import './env.mjs';
 import path from 'node:path';
 import {readFile} from 'node:fs/promises';
 import {createPrintApi} from './api.mjs';

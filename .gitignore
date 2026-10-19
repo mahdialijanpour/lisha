@@ -12,3 +12,4 @@ scripts/font.css
 data/
 .env
 .env.*
+!.env.example

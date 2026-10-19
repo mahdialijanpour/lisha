@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "node server/index.mjs",
+    "admin:grant": "node server/admin.mjs",
+    "demo:setup": "node scripts/setup-demo.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test tests/*.test.js"
   },
+  "engines": {"node": ">=22.19.0"},
   "dependencies": {
     "react": "19.3.0",
     "react-dom": "19.3.0",

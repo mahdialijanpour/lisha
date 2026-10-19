@@ -2,9 +2,11 @@ import React,{useEffect,useRef,useState} from 'react';
 import {Link,NavLink} from 'react-router-dom';
 import {Menu,Search,ShoppingBag,UserRound} from 'lucide-react';
 import {fa} from './data';
+import {useAuth} from './commerce-context';
 import './header.css';
 
 export function SiteHeader({logo,count,onOpen}){
+ const {customer}=useAuth();const isAdmin=customer?.role==='admin';
  const [merged,setMerged]=useState(false);
  const brandRef=useRef(null);
  const menuRef=useRef(null);
@@ -34,7 +36,7 @@ export function SiteHeader({logo,count,onOpen}){
   <div className="header-mini-brand" inert={!merged?true:undefined} aria-hidden={!merged?true:undefined}>{logo}</div>
   <nav className="nav-group nav-tools" aria-label="ابزارهای فروشگاه">
    <button onClick={()=>onOpen('search')} aria-label="جستجو"><Search/><span>جستجو</span></button>
-   <Link to="/my-account/" aria-label="پروفایل"><UserRound/><span>پروفایل</span></Link>
+   <Link to={isAdmin?'/admin/':'/my-account/'} aria-label={isAdmin?'مدیریت فروشگاه':'پروفایل'}><UserRound/><span>{isAdmin?'مدیریت':'پروفایل'}</span></Link>
    <button onClick={()=>onOpen('cart')} aria-label="سبد خرید"><ShoppingBag/><span>سبد</span><b className="cart-count">{fa(count)}</b></button>
   </nav>
  </header>;
